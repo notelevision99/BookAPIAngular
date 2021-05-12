@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Acme.ProjectCompare</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="4.3.0" />
+    <ProjectReference Include="..\Acme.ProjectCompare.Application.Contracts\Acme.ProjectCompare.Application.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

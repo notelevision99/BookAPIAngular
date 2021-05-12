@@ -1,0 +1,7 @@
+<kendo-dialog title="Please confirm" *ngIf="isActive" (close)="closeForm()" [minWidth]="250" [width]="450">
+  <p style="margin: 30px; text-align: center;">Are you sure you want to delete {{bookData.bookName}}?</p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="onCancel($event)">Cancel</button>
+    <button class="k-button k-primary" (click)="onSave($event)">Save</button>
+</kendo-dialog-actions>
+</kendo-dialog>

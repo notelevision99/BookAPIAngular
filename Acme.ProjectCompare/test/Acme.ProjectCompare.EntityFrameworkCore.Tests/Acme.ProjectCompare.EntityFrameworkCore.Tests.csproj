@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Acme.ProjectCompare</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.*" />
+    <ProjectReference Include="..\..\src\Acme.ProjectCompare.EntityFrameworkCore\Acme.ProjectCompare.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Acme.ProjectCompare.TestBase\Acme.ProjectCompare.TestBase.csproj" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>
