@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc;
 
-namespace Acme.ProjectCompare.Controllers
-{
-    public class HomeController : AbpController
-    {
-        public ActionResult Index()
+    namespace Acme.ProjectCompare.Controllers
+    { 
+        public class HomeController : AbpController 
         {
-            return Redirect("~/swagger");
-            
+            public ActionResult Index() 
+            { 
+                return Redirect("~/swagger");           
+            }
         }
     }
-}

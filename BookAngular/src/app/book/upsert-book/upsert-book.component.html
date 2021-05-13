@@ -1,38 +1,38 @@
 
-<kendo-dialog *ngIf="isActive" (close)="close()" [minWidth]="250" [width]="450">
-    <kendo-dialog-titlebar>
-        {{ isNew ? 'Add new product' : 'Edit product' }}
-    </kendo-dialog-titlebar>
-    <form class="k-form" [formGroup]="registerForm" >
-        <fieldset class="k-form-fieldset">
-            <kendo-formfield>
-                <kendo-label [for]="bookDescription" text="Book Id"></kendo-label>
-                <input type="text" formControlName="bookId" kendoTextBox #bookId  disabled/>
-                <kendo-formhint>The id of book</kendo-formhint>
-             
+    <kendo-dialog *ngIf="isActive" (close)="close()" [minWidth]="250" [width]="450">
+        <kendo-dialog-titlebar>
+            {{ isNew ? 'Add new product' : 'Edit product' }}
+        </kendo-dialog-titlebar>
+        <form class="k-form" [formGroup]="registerForm" >
+            <fieldset class="k-form-fieldset">
+                <kendo-formfield>
+                    <kendo-label [for]="bookDescription" text="Book Id"></kendo-label>
+                    <input type="text" formControlName="bookId" kendoTextBox #bookId  disabled/>
+                    <kendo-formhint>The id of book</kendo-formhint>
+                
+                </kendo-formfield>
+                <kendo-formfield>
+                    <kendo-label [for]="bookName" text="Book Name"></kendo-label>
+                    <input type="text" formControlName="bookName" kendoTextBox #bookName  required/>
+                    <kendo-formhint>The name of book</kendo-formhint>
+                    <kendo-formerror>Error: Book Name is required</kendo-formerror>
+                </kendo-formfield>
+                <kendo-formfield>
+                <kendo-label  text="Book Type"></kendo-label>
+                <input type="text" formControlName="bookType" kendoTextBox #bookType  required/>
+                <kendo-formhint>The type of book</kendo-formhint>
+                <kendo-formerror>Error: Book Type is required</kendo-formerror>
             </kendo-formfield>
             <kendo-formfield>
-                <kendo-label [for]="bookName" text="Book Name"></kendo-label>
-                <input type="text" formControlName="bookName" kendoTextBox #bookName  required/>
-                <kendo-formhint>The name of book</kendo-formhint>
-                <kendo-formerror>Error: Book Name is required</kendo-formerror>
+                <kendo-label text="Book Description"></kendo-label>
+                <input type="text" formControlName="description" kendoTextBox #bookDescription  required/>
+                <kendo-formhint>The description of book</kendo-formhint>
+                <kendo-formerror>Error: Book description is required</kendo-formerror>
             </kendo-formfield>
-            <kendo-formfield>
-              <kendo-label  text="Book Type"></kendo-label>
-              <input type="text" formControlName="bookType" kendoTextBox #bookType  required/>
-              <kendo-formhint>The type of book</kendo-formhint>
-              <kendo-formerror>Error: Book Type is required</kendo-formerror>
-          </kendo-formfield>
-          <kendo-formfield>
-              <kendo-label text="Book Description"></kendo-label>
-              <input type="text" formControlName="description" kendoTextBox #bookDescription  required/>
-              <kendo-formhint>The description of book</kendo-formhint>
-              <kendo-formerror>Error: Book description is required</kendo-formerror>
-          </kendo-formfield>
-        </fieldset>
-    </form>
-    <kendo-dialog-actions>
-        <button kendoButton (click)="submitForm()" primary="true">Yes</button>
-    </kendo-dialog-actions>
-</kendo-dialog>
- 
+            </fieldset>
+        </form>
+        <kendo-dialog-actions>
+            <button kendoButton (click)="submitForm()" primary="true">Yes</button>
+        </kendo-dialog-actions>
+    </kendo-dialog>
+    

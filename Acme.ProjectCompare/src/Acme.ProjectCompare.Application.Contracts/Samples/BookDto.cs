@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Acme.ProjectCompare.Samples
-{
-    public class BookDto
+    namespace Acme.ProjectCompare.Samples
     {
-        public Guid BookId { get; set; }
-        
-        public string BookName { get; set; }
-        public string BookType { get; set; }
-        public string Description { get; set; }
+        public class BookDto
+        {
+            public Guid BookId { get; set; }  
+            public string BookName { get; set; }
+            public string BookType { get; set; }
+            public string Description { get; set; }
+        }
     }
-}
