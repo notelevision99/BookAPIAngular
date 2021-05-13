@@ -12,35 +12,34 @@
     constructor(private http: HttpClient) { }
 
     listBooks: BookModel[];
-    baseUrl: string = "https://localhost:44317/api/ProjectCompare/book";
-    baseUrlPaging: string = "https://localhost:44317/api/ProjectCompare/book?pageSize=5&pageNumber=1";
-    
+    baseUrl: string = "https://localhost:44317/api/book"; 
     GetBook(pageSize?: number, pageNumber?: number, searchString? : string): Observable<BookModel> {
       let result: any;
-      //Non Search
+      let url : string;
       if(searchString == null){
+        url = `${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}`;
         if (pageSize !== undefined && pageNumber !== undefined) {
-          const urlPaging = `${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}`
-          result = this.http.get(urlPaging);
+          result = this.http.get(url);
           return result;
         } else {
-          result = this.http.get(this.baseUrlPaging);
-          return result
+          pageSize = 5;
+          pageNumber = 1;
+          result = this.http.get(url);
+          return result;
         }
       }
-      //Search
-      else if(searchString != null){
+      else{
+        url = `${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}&searchiString=${searchString}`;
         if (pageSize !== undefined && pageNumber !== undefined) {      
-          const urlPaging =  `https://localhost:44317/api/ProjectCompare/book?pageSize=${pageSize}&pageNumber=${pageNumber}&searchString=${searchString}`
-          result = this.http.get(urlPaging);
+          result = this.http.get(url);
           return result;
         } else {
-          const urlPaging = `https://localhost:44317/api/ProjectCompare/book?${searchString}`
-          result = this.http.get(urlPaging);
+          pageSize = 5;
+          pageNumber = 1;
+          result = this.http.get(`${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}&searchString=${searchString}`);
           return result;
         } 
       }
-      
     }
     GetBookById(id : string) : Observable<any> {
       let result : any

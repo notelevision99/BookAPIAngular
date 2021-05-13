@@ -4,7 +4,7 @@ using System.Text;
 
     namespace Acme.ProjectCompare.Samples
     {
-        public class BookForList
+        public class BookList
         {
             public int TotalPage { get; set; }
             

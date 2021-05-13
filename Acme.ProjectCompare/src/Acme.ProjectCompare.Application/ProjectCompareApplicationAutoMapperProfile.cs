@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using Acme.ProjectCompare.Model;
+using Acme.ProjectCompare.Samples;
+using AutoMapper;
+using Volo.Abp.AutoMapper;
 
 namespace Acme.ProjectCompare
 {
@@ -6,9 +9,7 @@ namespace Acme.ProjectCompare
     {
         public ProjectCompareApplicationAutoMapperProfile()
         {
-            /* You can configure your AutoMapper mapping configuration here.
-             * Alternatively, you can split your mapping configurations
-             * into multiple profile classes for a better organization. */
+            CreateMap<Book, BookDto>().ForMember(b => b.BookId, opt => opt.MapFrom(p => p.Id));
         }
     }
 }

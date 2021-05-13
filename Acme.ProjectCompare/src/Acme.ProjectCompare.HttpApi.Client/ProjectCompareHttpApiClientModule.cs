@@ -9,9 +9,7 @@ using Volo.Abp.Modularity;
             typeof(AbpHttpClientModule))]
         public class ProjectCompareHttpApiClientModule : AbpModule
         {
-            public const string RemoteServiceName = "ProjectCompare";
-
-
+            public const string RemoteServiceName = "BookDb";
             public override void ConfigureServices(ServiceConfigurationContext context)
             {
                 context.Services.AddHttpClientProxies(

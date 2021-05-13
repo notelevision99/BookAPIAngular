@@ -14,8 +14,6 @@ import { BookServiceService } from '../../services/book-service.service';
   styleUrls: ['./listbook.component.scss']
 })
   export class ListbookComponent implements OnInit {
-
-    
     bookModel: BookModel;
     booksDataGrid: any;
     book: Book;
@@ -23,14 +21,11 @@ import { BookServiceService } from '../../services/book-service.service';
     gridView: GridDataResult;
     idUpDel: string;
     searchString: string;
-
-    // dialog field 
-    public isActive = false;
-    //check dialog create or edit
+ 
+    public isActiveDialogUpsert = false;
     public isNew = false;
-    //loadBook toggle
     public isReloadBooks = false;
-    public isActiveDeleteDialog = false;
+    public isActiveDialogDelete = false;
     public searchForm: FormGroup = new FormGroup({
       searchString: new FormControl()
     })
@@ -39,7 +34,6 @@ import { BookServiceService } from '../../services/book-service.service';
     
     ngOnInit() {
         this.loadBooks();
-        console.log("On init", this.isReloadBooks)
         if(this.isReloadBooks)
         {
           this.loadBooks();
@@ -59,7 +53,7 @@ import { BookServiceService } from '../../services/book-service.service';
     }
 
     addHandler(){
-      this.isActive = true
+      this.isActiveDialogUpsert = true
       this.book = new Book();
       this.isNew = true;
       this.isReloadBooks = true;
@@ -68,27 +62,26 @@ import { BookServiceService } from '../../services/book-service.service';
     editHandler({ dataItem }) {
       this.idUpDel = dataItem.bookId 
       this.book = dataItem
-      this.isActive = true;
+      this.isActiveDialogUpsert = true;
       this.isNew = false;
       this.isReloadBooks = true;
     }
 
     removeHandler({ dataItem }) {
       this.idUpDel = dataItem.bookId
-      this.isActiveDeleteDialog = true
+      this.isActiveDialogDelete = true
       this.book = dataItem  
       this.isReloadBooks = true;
     }
 
     cancelHandler(){
-      this.isActive = false;
-      this.isActiveDeleteDialog = false;
-      //Empty Data  
+      this.isActiveDialogUpsert = false;
+      this.isActiveDialogDelete = false; 
       this.book = new Book();
     }
 
     onEditBook() {
-      this.isActive = false;
+      this.isActiveDialogUpsert = false;
     }
 
     onSearch() {
@@ -104,7 +97,7 @@ import { BookServiceService } from '../../services/book-service.service';
       {
         getBookCallback = (this.pagingModel.skip === 0 && this.pagingModel.pageSize == 2 ) ? this.service.GetBook() : this.service.GetBook(this.pagingModel.pageSize, this.pagingModel.currentPage);
       }
-      else if(searchString !== null){
+      else{
         getBookCallback = (this.pagingModel.skip === 0 && this.pagingModel.pageSize == 2 ) ? this.service.GetBook() : this.service.GetBook(this.pagingModel.pageSize, this.pagingModel.currentPage, this.searchString);
       }
       getBookCallback.subscribe((book: BookModel) => {

@@ -9,7 +9,7 @@ using Volo.Abp;
     namespace Acme.ProjectCompare.Samples
     {
         [RemoteService]
-        [Route("api/ProjectCompare/book")]
+        [Route("api/book")]
         public class BookController : ProjectCompareController
         {
             private readonly IBookServices _bookServices;
@@ -30,7 +30,7 @@ using Volo.Abp;
                 var book = await _bookServices.GetBookById(id);
                 if(book == null)
                 {
-                    return null;
+                    return new BadRequestObjectResult(new { Message = "Cannot find book!" });
                 }
                 return Ok(book);
             }
@@ -39,7 +39,7 @@ using Volo.Abp;
             public async Task<IActionResult> CreateBook([FromBody] BookDto bookDto)
             {
                 var result = await _bookServices.CreateBook(bookDto);
-                if(result == 0)
+                if(result == false)
                 {
                     return new BadRequestObjectResult(new { Message = "Update failed" });
                 }   
@@ -49,7 +49,7 @@ using Volo.Abp;
             public async Task<IActionResult> UpdateBook(Guid id, [FromBody] BookDto bookDto)
             {
                 var result = await _bookServices.UpdateBook(id, bookDto);
-                if(result == 0)
+                if(result == false)
                 {
                     return new BadRequestObjectResult(new { Message = "Update failed" });
                 }
@@ -59,12 +59,11 @@ using Volo.Abp;
             public async Task<IActionResult> DeleteBook(Guid id)
             {
                 var result = await _bookServices.DeleteBook(id);
-                if (result == 0)
+                if (result == false)
                 {
                     return new BadRequestObjectResult(new { Message = "Delele Error" });
                 }
                 return Ok(new { Message = "Deleted Successfully" });
-
             }
         }
     }

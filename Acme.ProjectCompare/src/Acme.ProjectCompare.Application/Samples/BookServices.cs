@@ -6,198 +6,135 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.ObjectMapping;
 
-
-    namespace Acme.ProjectCompare.Samples
+namespace Acme.ProjectCompare.Samples
+{
+    public class BookServices : ApplicationService, IBookServices
     {
-        public class BookServices : ApplicationService, IBookServices
+        private readonly IRepository<Book, Guid> _bookRepository;
+        private readonly IObjectMapper<ProjectCompareApplicationModule> _bookMapper;
+
+        public BookServices(IRepository<Book, Guid> bookRepository, IObjectMapper<ProjectCompareApplicationModule> bookMapper)
         {
-            private readonly IRepository<Book, Guid> _bookRepository;
-
-            public BookServices(IRepository<Book, Guid> bookRepository)
+            _bookRepository = bookRepository;
+            _bookMapper = bookMapper;
+        }
+        public async Task<BookList> GetBooks(int pageSize, int pageNumber, string searchString)
+        {
+            int totalCount;
+            int totalPage;
+            int previousPage;
+            int nextPage;
+            if (searchString == null)
             {
-                _bookRepository = bookRepository;
-            }
-            public async Task<BookForList> GetBooks(int pageSize, int pageNumber, string searchString)
-            {
-                
-                int count;
-                int currentPage;
-                int totalCount;
-                int totalPage;
-                int previousPage;
-                int nextPage;
-                if(searchString == null)
+
+                var source = _bookRepository.Select(p => _bookMapper.Map<Book,BookDto>(p)).AsQueryable();
+
+                totalCount = source.Count();
+
+                totalPage = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+                previousPage = pageNumber > 1 ? (pageNumber - 1) : 1;
+
+                nextPage = pageNumber < totalPage ? (pageNumber + 1) : pageNumber;
+
+                var books = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+                var result = new BookList
                 {
-                    var source = _bookRepository.Select(p => new BookDto
-                    {
-                        BookId = p.Id,
-                        BookName = p.BookName,
-                        BookType = p.BookType,
-                        Description = p.Description
-                    }).AsQueryable();
-
-                    count = source.Count();
-
-                    currentPage = pageNumber;
-
-                    totalCount = count;
-
-                    totalPage = (int)Math.Ceiling(count / (double)pageSize);
-
-                    previousPage = currentPage > 1 ? (currentPage - 1) : 1;
-
-                    nextPage = currentPage < totalPage ? (currentPage + 1) : currentPage;
-
-                    var books = source.Skip((currentPage - 1) * pageSize).Take(pageSize).Select(p => new BookDto
-                    {
-                        BookId = p.BookId,
-                        BookName = p.BookName,
-                        BookType = p.BookType,
-                        Description = p.Description
-                    }).ToList();
-        
-                    var result = new BookForList { 
-                        TotalPage = totalPage, 
-                        CurrentPage = currentPage,
-                        PageSize = pageSize,
-                        TotalCount = totalCount,
-                        PreviousPage = previousPage,
-                        NextPage = nextPage,
-                        Books = books
-                    };
-                    return result;
-                }
-                else
-                {
-                    // source query with search string
-                    var source = _bookRepository.Where(p => p.BookName.Contains(searchString)).Select(p => new BookDto
-                    {
-                        BookId = p.Id,
-                        BookName = p.BookName,
-                        BookType = p.BookType,
-                        Description = p.Description
-                    }).AsQueryable();
-
-                    count = source.Count();
-
-                    currentPage = pageNumber;             
-
-                    totalCount = count;
-
-                    totalPage = (int)Math.Ceiling(count / (double)pageSize);
-
-                    previousPage = currentPage > 1 ? (currentPage - 1) : 1;
-
-                    nextPage = currentPage < totalPage ? (currentPage + 1) : totalPage;
-
-                    var books = source.Skip((currentPage - 1) * pageSize).Take(pageSize).Select(p => new BookDto
-                    {
-                        BookId = p.BookId,
-                        BookName = p.BookName,
-                        BookType = p.BookType,
-                        Description = p.Description
-                    }).ToList();
-                    var result = new BookForList
-                    {
-                        TotalPage = totalPage,
-                        CurrentPage = currentPage,
-                        PageSize = pageSize,
-                        TotalCount = totalCount,
-                        PreviousPage = previousPage,
-                        NextPage = nextPage,
-                        Books = books
-                    };
-                    return result;
-                }
-                //count record
-                
-
-
-                //var books = _bookRepository.Select(p => new BookDto
-                //{
-                //    BookName = p.BookName,
-                //    BookType = p.BookType,
-                //    Description = p.Description
-                //}).ToList();
-                //var books = new List<BookDto>() { new BookDto() { BookName = "1234" } };
-                
-            }
-            
-
-            public async Task<BookDto> GetBookById(Guid id)
-            {
-                var bookDetail = await _bookRepository.FirstOrDefaultAsync(p => p.Id == id);
-                if (bookDetail == null)
-                {
-                    return null;
-                }
-                return new BookDto
-                {
-                    BookId = bookDetail.Id,
-                    BookName = bookDetail.BookName,
-                    BookType = bookDetail.BookType,
-                    Description = bookDetail.Description
+                    TotalPage = totalPage,
+                    CurrentPage = pageNumber,
+                    PageSize = pageSize,
+                    TotalCount = totalCount,
+                    PreviousPage = previousPage,
+                    NextPage = nextPage,
+                    Books = books
                 };
+                return result;
             }
+            else
+            {
+                var source = _bookRepository.Where(p => p.BookName.Contains(searchString)).Select(p => _bookMapper.Map<Book,BookDto>(p)).AsQueryable();
 
-            public async Task<int> DeleteBook(Guid id)
-            {
-                var bookForDelete = await _bookRepository.FirstOrDefaultAsync(p => p.Id == id);
-                if (bookForDelete == null)
+                totalCount = source.Count();
+
+                totalPage = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+                previousPage = pageNumber > 1 ? (pageNumber - 1) : 1;
+
+                nextPage = pageNumber < totalPage ? (pageNumber + 1) : totalPage;
+
+                var books = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+                var result = new BookList
                 {
-                    return 0;
-                }
-                await _bookRepository.DeleteAsync(bookForDelete);
-                return 1;
+                    TotalPage = totalPage,
+                    CurrentPage = pageNumber,
+                    PageSize = pageSize,
+                    TotalCount = totalCount,
+                    PreviousPage = previousPage,
+                    NextPage = nextPage,
+                    Books = books
+                };
+                return result;
             }
+        }
 
 
-            public async Task<int> UpdateBook(Guid id, BookDto bookDto)
+        public async Task<BookDto> GetBookById(Guid id)
+        {
+            var bookDetail = await _bookRepository.FirstOrDefaultAsync(p => p.Id == id);
+            if (bookDetail == null)
             {
-                var existedBook = await _bookRepository.FirstOrDefaultAsync(b => b.Id == id);
-        
-                if (existedBook == null)
-                {
-                    return 0;
-                }
-                else
-                {
-                    existedBook.BookName = bookDto.BookName;
-                    existedBook.BookType = bookDto.BookType;
-                    existedBook.Description = bookDto.Description;
-                    await _bookRepository.UpdateAsync(existedBook);
-                    return 1;
-                }
+                return null;
             }
-            public async Task<int> CreateBook(BookDto bookDto)
+            var bookResult = _bookMapper.Map<Book, BookDto>(bookDetail);
+            return bookResult;
+        }
+
+        public async Task<bool> UpdateBook(Guid id, BookDto bookDto)
+        {
+            var existedBook = await _bookRepository.FirstOrDefaultAsync(b => b.Id == id);
+
+            if (existedBook == null)
             {
-                Book book;
-                book = new Book();
-                if(bookDto != null)
-                {
-                    book.BookName = bookDto.BookName;
-                    book.BookType = bookDto.BookType;
-                    book.Description = bookDto.Description;
-                    await _bookRepository.InsertAsync(book);
-                    return 1;
-                }
-                return 0;
+                return false;
             }
-            public async Task<int> DeteleBook(Guid id)
+            else
             {
-                var bookToDetele =  await _bookRepository.FirstOrDefaultAsync(p => p.Id == id);
-                if(bookToDetele == null)
-                {
-                    return 0;
-                }
-                else
-                {
-                    await _bookRepository.DeleteAsync(bookToDetele);
-                    return 1;
-                }
-                    
-            
+                existedBook.BookName = bookDto.BookName;
+                existedBook.BookType = bookDto.BookType;
+                existedBook.Description = bookDto.Description;
+                await _bookRepository.UpdateAsync(existedBook);
+                return true;
+            }
+        }
+        public async Task<bool> CreateBook(BookDto bookDto)
+        {
+            Book book;
+            book = new Book();
+            if (bookDto != null)
+            {
+                book.BookName = bookDto.BookName;
+                book.BookType = bookDto.BookType;
+                book.Description = bookDto.Description;
+                await _bookRepository.InsertAsync(book);
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> DeleteBook(Guid id)
+        {
+            var bookToDetele = await _bookRepository.FirstOrDefaultAsync(p => p.Id == id);
+            if (bookToDetele == null)
+            {
+                return false;
+            }
+            else
+            {
+                await _bookRepository.DeleteAsync(bookToDetele);
+                return true;
             }
         }
     }
+}
