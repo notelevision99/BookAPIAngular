@@ -8,6 +8,7 @@ namespace Acme.ProjectCompare.Controllers
         public ActionResult Index()
         {
             return Redirect("~/swagger");
+            
         }
     }
 }

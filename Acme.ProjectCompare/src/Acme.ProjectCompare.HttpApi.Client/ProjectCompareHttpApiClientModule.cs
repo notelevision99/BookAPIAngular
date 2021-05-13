@@ -11,6 +11,7 @@ namespace Acme.ProjectCompare
     {
         public const string RemoteServiceName = "ProjectCompare";
 
+
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             context.Services.AddHttpClientProxies(

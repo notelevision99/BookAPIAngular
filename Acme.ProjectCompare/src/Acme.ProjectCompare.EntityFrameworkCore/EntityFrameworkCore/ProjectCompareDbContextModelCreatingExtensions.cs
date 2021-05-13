@@ -16,7 +16,6 @@ namespace Acme.ProjectCompare.EntityFrameworkCore
                 ProjectCompareDbProperties.DbTablePrefix,
                 ProjectCompareDbProperties.DbSchema
             );
-
             optionsAction?.Invoke(options);
 
             /* Configure all entities here. Example:

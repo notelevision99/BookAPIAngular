@@ -14,6 +14,7 @@ namespace Acme.ProjectCompare.Migrations
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
+            
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("_Abp_DatabaseProvider", EfCoreDatabaseProvider.SqlServer)

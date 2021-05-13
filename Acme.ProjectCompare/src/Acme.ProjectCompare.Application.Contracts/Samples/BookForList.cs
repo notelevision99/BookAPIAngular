@@ -7,6 +7,7 @@ namespace Acme.ProjectCompare.Samples
     public class BookForList
     {
         public int TotalPage { get; set; }
+        
         public int CurrentPage { get; set; }
 
         public int PageSize { get; set; }

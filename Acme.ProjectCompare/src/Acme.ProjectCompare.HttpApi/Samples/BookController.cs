@@ -17,6 +17,7 @@ namespace Acme.ProjectCompare.Samples
         {
             _bookServices = bookServices;
         }
+        
         [HttpGet]
         public async Task<JsonResult> GetBooks([FromQuery] int pageSize,int pageNumber, string? searchString)
         {

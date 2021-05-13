@@ -5,4 +5,5 @@ export class PagingModel {
   currentPage = 1;
   skip = 0;
   pageSize  = 5;
+  
 }

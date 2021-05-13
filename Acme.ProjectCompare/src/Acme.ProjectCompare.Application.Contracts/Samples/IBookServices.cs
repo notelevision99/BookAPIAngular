@@ -12,7 +12,6 @@ namespace Acme.ProjectCompare.Samples
         Task<BookDto> GetBookById(Guid id);
         Task<int> UpdateBook(Guid id, BookDto bookDto);
         Task<int> DeleteBook(Guid id);
-
         Task<int> CreateBook(BookDto bookDto);
     }
 }

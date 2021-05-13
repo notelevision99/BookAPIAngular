@@ -9,6 +9,7 @@ namespace Acme.ProjectCompare.Model
     {
         public string BookName { get; set; }
         public string BookType { get; set; }
+        
         public string Description { get; set; }
     }
 }

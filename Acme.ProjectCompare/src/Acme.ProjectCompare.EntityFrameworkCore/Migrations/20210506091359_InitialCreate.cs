@@ -11,6 +11,7 @@ namespace Acme.ProjectCompare.Migrations
                 name: "Books",
                 columns: table => new
                 {
+                    
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BookName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BookType = table.Column<string>(type: "nvarchar(max)", nullable: true),

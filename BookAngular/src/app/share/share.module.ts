@@ -6,7 +6,6 @@ import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { DialogModule } from '@progress/kendo-angular-dialog';
 import { NotificationModule } from '@progress/kendo-angular-notification';
 @NgModule({
-  
   imports: [
     CommonModule,
     DialogModule,

@@ -21,6 +21,7 @@ const routes: Routes = [
   // { path: 'addbook', component: CreateBookComponent },
   // { path: 'editbook/:id', component: UpdateBookComponent}
 ];
+
 @NgModule({
     declarations: [									     
         ListbookComponent,

@@ -19,7 +19,6 @@ namespace Acme.ProjectCompare.EntityFrameworkCore
         {
 
         }
-
         public virtual DbSet<Book> Books { get; set; }
         //public virtual DbSet<IdentityUserLogin> UserLogins { get; }
    

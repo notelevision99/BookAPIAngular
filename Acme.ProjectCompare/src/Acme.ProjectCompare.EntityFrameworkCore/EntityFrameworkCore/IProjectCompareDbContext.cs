@@ -15,7 +15,6 @@ namespace Acme.ProjectCompare.EntityFrameworkCore
         
         DbSet<Book> Books { get; set; }
         
-
         //DbSet<IdentityUserClaim> UserClaims { get; }
         //DbSet<IdentityUserLogin> UserLogins { get; }
         //DbSet<IdentityUserToken> UserTokens { get; }

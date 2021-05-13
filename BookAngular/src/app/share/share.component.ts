@@ -9,6 +9,7 @@ export class ShareComponent implements OnInit {
 
   constructor() { }
 
+  
   ngOnInit() {
   }
 

@@ -20,6 +20,7 @@ namespace Acme.ProjectCompare.Samples
         }
         public async Task<BookForList> GetBooks(int pageSize, int pageNumber, string searchString)
         {
+            
             int count;
             int currentPage;
             int totalCount;

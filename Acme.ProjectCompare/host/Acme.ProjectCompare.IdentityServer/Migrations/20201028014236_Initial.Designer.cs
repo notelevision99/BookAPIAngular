@@ -14,6 +14,7 @@ namespace Acme.ProjectCompare.Migrations
     [Migration("20201028014236_Initial")]
     partial class Initial
     {
+        
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

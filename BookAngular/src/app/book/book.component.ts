@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
   templateUrl: './book.component.html'
   
 })
+
 export class BookComponent {
   title = 'BookStore';
 }

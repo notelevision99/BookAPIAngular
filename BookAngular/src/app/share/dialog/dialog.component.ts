@@ -22,6 +22,7 @@ export class DialogComponent implements OnInit {
     this.isActive = false
     this.cancel.emit();
   }
+  
   onCancel(){
     this.isActive = false
     this.cancel.emit();

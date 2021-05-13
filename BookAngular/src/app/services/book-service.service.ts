@@ -9,7 +9,6 @@ import { Observable, Observer } from 'rxjs';
 
 export class BookServiceService {
 
-
   constructor(private http: HttpClient) { }
 
   listBooks: BookModel[];
