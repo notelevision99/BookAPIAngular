@@ -26,58 +26,33 @@ namespace Acme.ProjectCompare.Samples
             int totalPage;
             int previousPage;
             int nextPage;
+            IQueryable<BookDto> source;
+            BookList result;
+            List<BookDto> bookResult;
             if (searchString == null)
             {
-
-                var source = _bookRepository.Select(p => _bookMapper.Map<Book,BookDto>(p)).AsQueryable();
-
-                totalCount = source.Count();
-
-                totalPage = (int)Math.Ceiling(totalCount / (double)pageSize);
-
-                previousPage = pageNumber > 1 ? (pageNumber - 1) : 1;
-
-                nextPage = pageNumber < totalPage ? (pageNumber + 1) : pageNumber;
-
-                var books = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-
-                var result = new BookList
-                {
-                    TotalPage = totalPage,
-                    CurrentPage = pageNumber,
-                    PageSize = pageSize,
-                    TotalCount = totalCount,
-                    PreviousPage = previousPage,
-                    NextPage = nextPage,
-                    Books = books
-                };
-                return result;
+                source = _bookRepository.Select(p => _bookMapper.Map<Book, BookDto>(p)).AsQueryable();
             }
             else
             {
-                var source = _bookRepository.Where(p => p.BookName.Contains(searchString)).Select(p => _bookMapper.Map<Book,BookDto>(p)).AsQueryable();
-
-                totalCount = source.Count();
-
-                totalPage = (int)Math.Ceiling(totalCount / (double)pageSize);
-
-                previousPage = pageNumber > 1 ? (pageNumber - 1) : 1;
-
-                nextPage = pageNumber < totalPage ? (pageNumber + 1) : totalPage;
-
-                var books = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-                var result = new BookList
-                {
-                    TotalPage = totalPage,
-                    CurrentPage = pageNumber,
-                    PageSize = pageSize,
-                    TotalCount = totalCount,
-                    PreviousPage = previousPage,
-                    NextPage = nextPage,
-                    Books = books
-                };
-                return result;
+                source = _bookRepository.Where(p => p.BookName.Contains(searchString)).Select(p => _bookMapper.Map<Book, BookDto>(p)).AsQueryable();
             }
+            totalCount = source.Count();
+            totalPage = (int)Math.Ceiling(totalCount / (double)pageSize);
+            previousPage = pageNumber > 1 ? (pageNumber - 1) : 1;
+            nextPage = pageNumber < totalPage ? (pageNumber + 1) : pageNumber;
+            bookResult = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            return new BookList
+            {
+                TotalPage = totalPage,
+                CurrentPage = pageNumber,
+                PageSize = pageSize,
+                TotalCount = totalCount,
+                PreviousPage = previousPage,
+                NextPage = nextPage,
+                Books = bookResult
+            }; ;
         }
 
 
@@ -88,6 +63,7 @@ namespace Acme.ProjectCompare.Samples
             {
                 return null;
             }
+
             var bookResult = _bookMapper.Map<Book, BookDto>(bookDetail);
             return bookResult;
         }
@@ -95,33 +71,27 @@ namespace Acme.ProjectCompare.Samples
         public async Task<bool> UpdateBook(Guid id, BookDto bookDto)
         {
             var existedBook = await _bookRepository.FirstOrDefaultAsync(b => b.Id == id);
-
             if (existedBook == null)
             {
                 return false;
             }
-            else
-            {
-                existedBook.BookName = bookDto.BookName;
-                existedBook.BookType = bookDto.BookType;
-                existedBook.Description = bookDto.Description;
-                await _bookRepository.UpdateAsync(existedBook);
-                return true;
-            }
+
+            existedBook = _bookMapper.Map(bookDto, existedBook);
+            await _bookRepository.UpdateAsync(existedBook);
+            return true;
         }
         public async Task<bool> CreateBook(BookDto bookDto)
         {
             Book book;
             book = new Book();
-            if (bookDto != null)
+            if (bookDto == null)
             {
-                book.BookName = bookDto.BookName;
-                book.BookType = bookDto.BookType;
-                book.Description = bookDto.Description;
-                await _bookRepository.InsertAsync(book);
-                return true;
+                return false;
             }
-            return false;
+            
+            var bookToUpdate = _bookMapper.Map<BookDto, Book>(bookDto);
+            await _bookRepository.InsertAsync(bookToUpdate);
+            return true;
         }
         public async Task<bool> DeleteBook(Guid id)
         {
@@ -130,11 +100,9 @@ namespace Acme.ProjectCompare.Samples
             {
                 return false;
             }
-            else
-            {
-                await _bookRepository.DeleteAsync(bookToDetele);
-                return true;
-            }
+
+            await _bookRepository.DeleteAsync(bookToDetele);
+            return true;
         }
     }
 }
