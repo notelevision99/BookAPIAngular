@@ -13,6 +13,7 @@ namespace Acme.ProjectCompare.Samples
     public class BookServices : ApplicationService, IBookServices
     {
         private readonly IRepository<Book, Guid> _bookRepository;
+       
         private readonly IObjectMapper<ProjectCompareApplicationModule> _bookMapper;
 
         public BookServices(IRepository<Book, Guid> bookRepository, IObjectMapper<ProjectCompareApplicationModule> bookMapper)

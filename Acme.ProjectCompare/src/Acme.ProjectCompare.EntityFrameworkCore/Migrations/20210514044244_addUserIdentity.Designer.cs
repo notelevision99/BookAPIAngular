@@ -4,15 +4,17 @@ using Acme.ProjectCompare.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace Acme.ProjectCompare.Migrations
 {
     [DbContext(typeof(ProjectCompareDbContext))]
-    partial class ProjectCompareDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210514044244_addUserIdentity")]
+    partial class addUserIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

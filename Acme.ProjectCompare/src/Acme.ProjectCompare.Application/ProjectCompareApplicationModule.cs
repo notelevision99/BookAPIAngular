@@ -19,7 +19,9 @@ namespace Acme.ProjectCompare
             Configure<AbpAutoMapperOptions>(options =>
             {
                 options.AddMaps<ProjectCompareApplicationModule>(validate: true);
+                
             });
+
         }
     }
 }
