@@ -18,9 +18,7 @@ import { UpsertBookComponent } from './upsert-book/upsert-book.component';
 import { ShareModule } from '../share/share.module';
 
 const routes: Routes = [
-  // { path: 'addbook', component: CreateBookComponent },
-  // { path: 'editbook/:id', component: UpdateBookComponent}
-];
+  ];
 
 @NgModule({
   declarations: [

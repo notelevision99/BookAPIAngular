@@ -1,18 +1,18 @@
-<header class="header">
-  <div class="logo">
-    <div class="logo-text">
-      <span routerLink="">Book Store</span>
+  <header class="header">
+    <div class="logo">
+      <div class="logo-text">
+        <span routerLink="">Book Store</span>
+      </div>
+      <i class="fas fa-bars logo-icon"></i>
     </div>
-    <i class="fas fa-bars logo-icon"></i>
-  </div>
-  <div class="account-container" *ngIf="currentUser">
-    <div class="account-name">
-      <span>Xin chào</span>
-      {{this.currentUser.userName}}
+    <div class="account-container" *ngIf="currentUser">
+      <div class="account-name">
+        <span>Xin chào</span>
+        {{this.currentUser.userName}}
+      </div>
+      <div class="account-dropdown">
+        <li (click)="logout()"><span>Logout</span></li>
+        <li><span>Settings</span> </li>
+      </div>
     </div>
-    <div class="account-dropdown">
-      <li (click)="logout()"><span>Logout</span></li>
-      <li><span>Settings</span> </li>
-    </div>
-  </div>
-</header>
+  </header>

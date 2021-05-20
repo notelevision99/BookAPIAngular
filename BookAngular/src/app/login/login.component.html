@@ -1,48 +1,30 @@
+<div class="login-container">
+  <form class="k-form" [formGroup]="loginForm">
+    <fieldset class="k-form-fieldset">
+      <legend class="k-form-legend">Login</legend>
+      <kendo-formfield>
+        <kendo-label [for]="username" text="Username"></kendo-label>
+        <kendo-textbox formControlName="userName" [clearButton]="true" #username required></kendo-textbox>
 
-
-  <div class="login-container">
-    <form class="k-form" [formGroup]="loginForm">
-      <fieldset class="k-form-fieldset">
-        <legend class="k-form-legend">Login</legend>
-        <kendo-formfield>
-          <kendo-label [for]="username" text="Username"></kendo-label>
-          <kendo-textbox
-            formControlName="userName"
-            [clearButton]="true"
-            #username
-            required
-          ></kendo-textbox>
-
-          <kendo-formhint>Your Username</kendo-formhint>
-          <kendo-formerror>Error: Username is required</kendo-formerror>
-        </kendo-formfield>
-        <kendo-formfield>
-          <kendo-label [for]="password" text="Password"> </kendo-label>
-          <kendo-textbox
-            formControlName="password"
-            #password
-            required
-            [clearButton]="true"
-          >        
+        <kendo-formhint>Your Username</kendo-formhint>
+        <kendo-formerror>Error: Username is required</kendo-formerror>
+      </kendo-formfield>
+      <kendo-formfield>
+        <kendo-label [for]="password" text="Password"> </kendo-label>
+        <kendo-textbox formControlName="password" #password required [clearButton]="true">
           <ng-template kendoTextBoxSuffixTemplate>
-            <button
-              kendoButton
-              look="clear"
-              icon="eye"
-              (click)="toggleVisibility()"
-            ></button>
+            <button kendoButton look="clear" icon="eye" (click)="toggleVisibility()"></button>
           </ng-template>
-          </kendo-textbox>
-          <kendo-formhint>Your password</kendo-formhint>
-          <kendo-formerror>Error: Password is required</kendo-formerror>
-        </kendo-formfield>
-        
+        </kendo-textbox>
+        <kendo-formhint>Your password</kendo-formhint>
+        <kendo-formerror>Error: Password is required</kendo-formerror>
+      </kendo-formfield>
 
-        <div class="k-form-buttons">
-          <button class="k-button k-primary" (click)="submitForm()">Login</button>
-          <button class="k-button" (click)="clearForm()">Clear</button>
-        </div>
-      </fieldset>
-    </form>
-  </div>
 
+      <div class="k-form-buttons">
+        <button class="k-button k-primary" (click)="submitForm()">Login</button>
+        <button class="k-button" (click)="clearForm()">Clear</button>
+      </div>
+    </fieldset>
+  </form>
+</div>
