@@ -1,37 +1,37 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Volo.Abp.Account;
-using Volo.Abp.Autofac;
-using Volo.Abp.AutoMapper;
-using Volo.Abp.FeatureManagement;
-using Volo.Abp.Identity;
-using Volo.Abp.Modularity;
-using Volo.Abp.PermissionManagement;
-using Volo.Abp.SettingManagement;
-using Volo.Abp.TenantManagement;
+﻿    using Microsoft.Extensions.DependencyInjection;
+    using Volo.Abp.Account;
+    using Volo.Abp.Autofac;
+    using Volo.Abp.AutoMapper;
+    using Volo.Abp.FeatureManagement;
+    using Volo.Abp.Identity;
+    using Volo.Abp.Modularity;
+    using Volo.Abp.PermissionManagement;
+    using Volo.Abp.SettingManagement;
+    using Volo.Abp.TenantManagement;
 
-namespace Acme.BookStore
-{
-    [DependsOn(
-        typeof(BookStoreDomainModule),
-        typeof(AbpAccountApplicationModule),
-        typeof(BookStoreApplicationContractsModule),
-        typeof(AbpIdentityApplicationModule),
-        typeof(AbpPermissionManagementApplicationModule),
-        typeof(AbpTenantManagementApplicationModule),
-        typeof(AbpFeatureManagementApplicationModule),
-        typeof(AbpSettingManagementApplicationModule),
-        typeof(AbpAutoMapperModule),
-        typeof(AbpAutofacModule)
-        )]
-    public class BookStoreApplicationModule : AbpModule
+    namespace Acme.BookStore
     {
-        public override void ConfigureServices(ServiceConfigurationContext context)
+        [DependsOn(
+            typeof(BookStoreDomainModule),
+            typeof(AbpAccountApplicationModule),
+            typeof(BookStoreApplicationContractsModule),
+            typeof(AbpIdentityApplicationModule),
+            typeof(AbpPermissionManagementApplicationModule),
+            typeof(AbpTenantManagementApplicationModule),
+            typeof(AbpFeatureManagementApplicationModule),
+            typeof(AbpSettingManagementApplicationModule),
+            typeof(AbpAutoMapperModule),
+            typeof(AbpAutofacModule)
+            )]
+        public class BookStoreApplicationModule : AbpModule
         {
-            context.Services.AddAutoMapperObjectMapper<BookStoreApplicationModule>();
-            Configure<AbpAutoMapperOptions>(options =>
+            public override void ConfigureServices(ServiceConfigurationContext context)
             {
-                options.AddMaps<BookStoreApplicationModule>();
-            });
+                context.Services.AddAutoMapperObjectMapper<BookStoreApplicationModule>();
+                Configure<AbpAutoMapperOptions>(options =>
+                {
+                    options.AddMaps<BookStoreApplicationModule>();
+                });
+            }
         }
     }
-}

@@ -42,10 +42,10 @@ export class LoginComponent implements OnInit {
       }
     )
   }
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.textbox.input.nativeElement.type = "password";
   }
-  public toggleVisibility(): void {
+  toggleVisibility(): void {
     const inputEl = this.textbox.input.nativeElement;
     inputEl.type = inputEl.type === "password" ? "text" : "password";
   }

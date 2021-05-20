@@ -1,30 +1,30 @@
-﻿using Acme.BookStore.Samples;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Volo.Abp;
-using Volo.Abp.AspNetCore.Mvc;
+﻿    using Acme.BookStore.Samples;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Threading.Tasks;
+    using Volo.Abp;
+    using Volo.Abp.AspNetCore.Mvc;
 
-namespace Acme.BookStore.Controllers
-{
-    [RemoteService]
-    [Route("/api/auth")]
-    public class AuthController : AbpController
+    namespace Acme.BookStore.Controllers
     {
-        private readonly IAuthenticateServices _authServices;
-        public AuthController(IAuthenticateServices authServices)
+        [RemoteService]
+        [Route("/api/auth")]
+        public class AuthController : AbpController
         {
-            _authServices = authServices;
-        }
-       [HttpPost]
-       [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto model)
-        {
-            var result = await _authServices.Login(model);
-            if (result == null)
+            private readonly IAuthenticateServices _authServices;
+            public AuthController(IAuthenticateServices authServices)
             {
-                return new BadRequestObjectResult(new { Message = "Something wrong" });
+                _authServices = authServices;
             }
-            return Ok(result);
+           [HttpPost]
+           [Route("login")]
+            public async Task<IActionResult> Login([FromBody] LoginDto model)
+            {
+                var result = await _authServices.Login(model);
+                if (result == null)
+                {
+                    return new BadRequestObjectResult(new { Message = "Something wrong" });
+                }
+                return Ok(result);
+            }
         }
     }
-}

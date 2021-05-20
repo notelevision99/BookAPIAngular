@@ -1,51 +1,51 @@
 
-<div class="body-content">
-    <div class="crud-content">
+  <div class="body-content">
+      <div class="crud-content">
+        
+        <div class="search-field">
+          <form [formGroup]="searchForm">
+            <kendo-formfield>
+              <kendo-textbox formControlName="searchString" #searchString required></kendo-textbox>
+              <button kendoButton (click)="onSearch()">Search</button>
+            </kendo-formfield>
+          </form>
+        </div>
+      </div>
       
-      <div class="search-field">
-        <form [formGroup]="searchForm">
-          <kendo-formfield>
-            <kendo-textbox formControlName="searchString" #searchString required></kendo-textbox>
-            <button kendoButton (click)="onSearch()">Search</button>
-          </kendo-formfield>
-        </form>
-      </div>
-    </div>
-    
-    <div class="table-content">
-      <kendo-grid [kendoGridBinding]="gridView" (edit)="editHandler($event)" (remove)="removeHandler($event)"
-        (add)="addHandler()"
-      >
-        <ng-template kendoGridToolbarTemplate>
-          <button kendoGridAddCommand>Add new</button>
-      </ng-template>
-        <kendo-grid-column field="bookId" title="ID" >
-        </kendo-grid-column>
-        <kendo-grid-column field="bookName" title="Book Name">
-        </kendo-grid-column>
-        <kendo-grid-column field="bookType" title="Book Type">
-        </kendo-grid-column>
-        <kendo-grid-column field="description" title="Description">
-        </kendo-grid-column>
+      <div class="table-content">
+        <kendo-grid [kendoGridBinding]="gridView" (edit)="editHandler($event)" (remove)="removeHandler($event)"
+          (add)="addHandler()"
+        >
+          <ng-template kendoGridToolbarTemplate>
+            <button kendoGridAddCommand>Add new</button>
+        </ng-template>
+          <kendo-grid-column field="bookId" title="ID" >
+          </kendo-grid-column>
+          <kendo-grid-column field="bookName" title="Book Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="bookType" title="Book Type">
+          </kendo-grid-column>
+          <kendo-grid-column field="description" title="Description">
+          </kendo-grid-column>
 
-        <kendo-grid-command-column title="Edit">
-          <ng-template kendoGridCellTemplate>
-            <!-- <button kendoGridEditCommand class="k-primary" routerLink="/editbook/{{idUpDel}}">Edit</button> -->
-            <button kendoGridEditCommand class="k-primary">Edit</button>
-            <button kendoGridRemoveCommand >Remove</button>
-          </ng-template>
-        </kendo-grid-command-column>
-      </kendo-grid>
-      <div *ngIf="isActiveDialogUpsert">
-        <app-upsert-book [isNew]= "isNew" [isReloadBooks]="isReloadBooks" [isActive]="isActiveDialogUpsert" [bookData]= "book" (cancel)="cancelHandler()" class="text-create">  
-        </app-upsert-book>
+          <kendo-grid-command-column title="Edit">
+            <ng-template kendoGridCellTemplate>
+              <!-- <button kendoGridEditCommand class="k-primary" routerLink="/editbook/{{idUpDel}}">Edit</button> -->
+              <button kendoGridEditCommand class="k-primary">Edit</button>
+              <button kendoGridRemoveCommand >Remove</button>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
+        <div *ngIf="isActiveDialogUpsert">
+          <app-upsert-book [isNew]= "isNew" [isReloadBooks]="isReloadBooks" [isActive]="isActiveDialogUpsert" [bookData]= "book" (cancel)="cancelHandler()" class="text-create">  
+          </app-upsert-book>
+        </div>
+        <div *ngIf="isActiveDialogDelete">
+          <app-dialog [isActive]="isActiveDialogDelete" [bookData]="book" (cancel)="cancelHandler()" ></app-dialog>
+        </div>
+        <kendo-datapager [style.width.%]="100" [pageSize]="pagingModel.pageSize" [skip]="pagingModel.skip"
+          [total]="pagingModel.totalCount" (pageSizeChange)="onPageSizeChange($event)" (pageChange)="onPageChange($event)">
+        </kendo-datapager>
       </div>
-      <div *ngIf="isActiveDialogDelete">
-        <app-dialog [isActive]="isActiveDialogDelete" [bookData]="book" (cancel)="cancelHandler()" ></app-dialog>
-      </div>
-      <kendo-datapager [style.width.%]="100" [pageSize]="pagingModel.pageSize" [skip]="pagingModel.skip"
-        [total]="pagingModel.totalCount" (pageSizeChange)="onPageSizeChange($event)" (pageChange)="onPageChange($event)">
-      </kendo-datapager>
     </div>
-  </div>
-  <router-outlet></router-outlet>
+    <router-outlet></router-outlet>

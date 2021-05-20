@@ -1,19 +1,19 @@
-import { Component, OnInit, } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
-import { PageSizeChangeEvent } from '@progress/kendo-angular-pager';
-import { Book } from 'src/app/model/Book';
-import { BookModel } from 'src/app/model/BookModel';
-import { PagingModel } from 'src/app/model/PagingModel';
-import { BookServiceService } from '../../services/book-service.service';
+  import { Component, OnInit, } from '@angular/core';
+  import { FormControl, FormGroup } from '@angular/forms';
+  import { Router } from '@angular/router';
+  import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
+  import { PageSizeChangeEvent } from '@progress/kendo-angular-pager';
+  import { Book } from 'src/app/model/Book';
+  import { BookModel } from 'src/app/model/BookModel';
+  import { PagingModel } from 'src/app/model/PagingModel';
+  import { BookServiceService } from '../../services/book-service.service';
 
 
-@Component({
-  selector: 'app-listbook',
-  templateUrl: './listbook.component.html',
-  styleUrls: ['./listbook.component.scss']
-})
+  @Component({
+    selector: 'app-listbook',
+    templateUrl: './listbook.component.html',
+    styleUrls: ['./listbook.component.scss']
+  })
   export class ListbookComponent implements OnInit {
     bookModel: BookModel;
     booksDataGrid: any;
@@ -22,7 +22,7 @@ import { BookServiceService } from '../../services/book-service.service';
     gridView: GridDataResult;
     idUpDel: string;
     searchString: string;
- 
+
     public isActiveDialogUpsert = false;
     public isNew = false;
     public isActiveDialogDelete = false;
@@ -30,11 +30,11 @@ import { BookServiceService } from '../../services/book-service.service';
       searchString: new FormControl()
     })
     constructor(public service: BookServiceService,
-      private router : Router
-      ) {}
-    
+      private router: Router
+    ) { }
+
     ngOnInit() {
-        this.loadBooks();
+      this.loadBooks();
     }
 
     onPageChange(e: PageChangeEvent) {
@@ -49,14 +49,14 @@ import { BookServiceService } from '../../services/book-service.service';
       this.loadBooks();
     }
 
-    addHandler(){
+    addHandler() {
       this.isActiveDialogUpsert = true
       this.book = new Book();
       this.isNew = true;
     }
 
     editHandler({ dataItem }) {
-      this.idUpDel = dataItem.bookId 
+      this.idUpDel = dataItem.bookId
       this.book = dataItem
       this.isActiveDialogUpsert = true;
       this.isNew = false;
@@ -65,13 +65,13 @@ import { BookServiceService } from '../../services/book-service.service';
     removeHandler({ dataItem }) {
       this.idUpDel = dataItem.bookId
       this.isActiveDialogDelete = true
-      this.book = dataItem  
+      this.book = dataItem
       this.isActiveDialogDelete = true
     }
 
-    cancelHandler(){
+    cancelHandler() {
       this.isActiveDialogUpsert = false;
-      this.isActiveDialogDelete = false; 
+      this.isActiveDialogDelete = false;
       this.book = new Book();
     }
 
@@ -84,16 +84,15 @@ import { BookServiceService } from '../../services/book-service.service';
       this.searchString = searchText;
       this.loadBooks(this.searchString);
     }
-   
+
 
     public loadBooks(searchString?: string) {
       var getBookCallback;
-      if(searchString == null)
-      {
-        getBookCallback = (this.pagingModel.skip === 0 && this.pagingModel.pageSize == 2 ) ? this.service.GetBook() : this.service.GetBook(this.pagingModel.pageSize, this.pagingModel.currentPage);
+      if (searchString == null) {
+        getBookCallback = (this.pagingModel.skip === 0 && this.pagingModel.pageSize == 2) ? this.service.GetBook() : this.service.GetBook(this.pagingModel.pageSize, this.pagingModel.currentPage);
       }
-      else{
-        getBookCallback = (this.pagingModel.skip === 0 && this.pagingModel.pageSize == 2 ) ? this.service.GetBook() : this.service.GetBook(this.pagingModel.pageSize, this.pagingModel.currentPage, this.searchString);
+      else {
+        getBookCallback = (this.pagingModel.skip === 0 && this.pagingModel.pageSize == 2) ? this.service.GetBook() : this.service.GetBook(this.pagingModel.pageSize, this.pagingModel.currentPage, this.searchString);
       }
       getBookCallback.subscribe((book: BookModel) => {
         this.bookModel = book;

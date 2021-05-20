@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿    using System;
+    using System.Collections.Generic;
+    using System.Text;
 
-namespace Acme.BookStore.Samples
-{
-    public class LoginDto
+    namespace Acme.BookStore.Samples
     {
-        public string UserName { get; set; }
-        public string Password { get; set; }
+        public class LoginDto
+        {
+            public string UserName { get; set; }
+            public string Password { get; set; }
+        }
     }
-}

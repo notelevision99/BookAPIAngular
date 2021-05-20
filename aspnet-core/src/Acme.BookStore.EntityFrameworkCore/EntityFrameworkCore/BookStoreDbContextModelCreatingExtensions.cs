@@ -1,25 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Volo.Abp;
-using Volo.Abp.EntityFrameworkCore.Modeling;
+﻿    using Microsoft.EntityFrameworkCore;
+    using Volo.Abp;
+    using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace Acme.BookStore.EntityFrameworkCore
-{
-    public static class BookStoreDbContextModelCreatingExtensions
+    namespace Acme.BookStore.EntityFrameworkCore
     {
-        public static void ConfigureBookStore(this ModelBuilder builder)
+        public static class BookStoreDbContextModelCreatingExtensions
         {
-            Check.NotNull(builder, nameof(builder));
-
-            /* Configure your own tables/entities inside here */
-
-            builder.Entity<Book>(b =>
+            public static void ConfigureBookStore(this ModelBuilder builder)
             {
-                b.ToTable("Books");
-                b.ConfigureByConvention();
-                //auto configure for the base class props
-                //...
-            });
+                Check.NotNull(builder, nameof(builder));
+
+                /* Configure your own tables/entities inside here */
+
+                builder.Entity<Book>(b =>
+                {
+                    b.ToTable("Books");
+                    b.ConfigureByConvention();
+                    //auto configure for the base class props
+                    //...
+                });
            
+            }
         }
     }
-}
