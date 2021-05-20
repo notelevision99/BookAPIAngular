@@ -41,7 +41,7 @@
       this.pagingModel.skip = e.skip;
       this.pagingModel.pageSize = e.take;
       this.pagingModel.currentPage = Math.ceil((this.pagingModel.skip / this.pagingModel.pageSize) + 1)
-      this.loadBooks();
+      this.searchString == undefined ? this.loadBooks() : this.loadBooks(this.searchString);
     }
 
     onPageSizeChange(e: PageSizeChangeEvent) {
