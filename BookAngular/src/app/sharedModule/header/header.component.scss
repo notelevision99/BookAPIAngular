@@ -1,25 +1,79 @@
     .header{
         display: flex;
         background-color: #282a35f0;
-        width: 1920px;
+        width: 100%;
         height: 64px;
+        .logo{
+            display: flex;
+            .logo-text{
+                font-size: 24px;
+                color: #fff;
+                font-weight: 500;
+                line-height: 64px;
+                align-items: center;
+                padding-left: 20px;
+                cursor: pointer;
+            }
+            .logo-icon{
+                line-height: 64px;
+                margin-left: 30px;
+                font-size: 32px;
+                color: #fff;
+            }
+        }
+        .account-container{
+            line-height: 100%;
+            display: flex;
+            align-items: center;
+            color: #fff;
+            margin-left: auto;
+            margin-right: 16px;
+            cursor: pointer;
+            position: relative;
+            width: 150px;
+            .account-name{
+                line-height: 24px;               
+            }
+            .account-name > span {
+                font-size: 16px;
+            }
+            .account-name:hover{
+              
+            }
+            .account-dropdown{
+               position: absolute;
+               left: -30px;
+               top: 64px;
+               background-color: #ccc;
+               height: auto;
+               width: 150px;
+               color: #fff; 
+               z-index: 1;
+               display: none;
+            }
+            
+            .account-dropdown > li{
+                list-style-type: none;
+                width: 100%;
+                padding: 14px 46px;
+                .span{
+                    
+                }
+            }
+            .account-dropdown > li:hover{
+                background-color: #000;
+               
+                
+            }
+        }
+        .account-container:hover{
+           
+            .account-dropdown {
+                display: block;
+            }
+        }
     }
-    .logo{
-        display: flex;
-    }
+    
 
-    .logo-text{
-        font-size: 24px;
-        color: #fff;
-        font-weight: 500;
-        line-height: 64px;
-        align-items: center;
-        padding-left: 20px;
-        cursor: pointer;
-    }
-    .logo-icon{
-        line-height: 64px;
-        margin-left: 30px;
-        font-size: 32px;
-        color: #fff;
-    }
+    
+    

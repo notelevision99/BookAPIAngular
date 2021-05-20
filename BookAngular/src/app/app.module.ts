@@ -1,6 +1,6 @@
   import { NgModule } from '@angular/core';
   import { BrowserModule } from '@angular/platform-browser';
-  import { HttpClientModule } from "@angular/common/http";
+  import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
   import { AppRoutingModule } from './app-routing.module';
   import { AppComponent } from './app.component';
 
@@ -14,31 +14,47 @@
   import { BookComponent } from './book/book.component';
   import { DialogsModule } from '@progress/kendo-angular-dialog';
   import { NotificationModule } from '@progress/kendo-angular-notification';
+import { LoginComponent } from './login/login.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InputsModule } from '@progress/kendo-angular-inputs';
+import { LabelModule } from '@progress/kendo-angular-label';
+import { Authgard } from './helper/authgard';
+import { JWTInterceptor } from './helper/JWTInterceptor';
 
   const routes: Routes = [
-    { path: 'book', component: ListbookComponent },
+    // { path: '',   redirectTo: '/book', pathMatch: 'full' },
+    { path: 'book', component: ListbookComponent , canActivate: [Authgard]},
+    { path: 'login', component: LoginComponent },
   ];
 
   @NgModule({
-    declarations: [									
+    declarations: [										
       AppComponent,
         SidebarComponent,
         HeaderComponent,
-        BookComponent
-    ],
+        BookComponent,
+        LoginComponent
+   ],
     imports: [
       BrowserModule,
       AppRoutingModule,
       HttpClientModule,
+      ReactiveFormsModule,
+      InputsModule, 
       BookModule,
       RouterModule.forRoot(routes),
       BrowserAnimationsModule,
       DialogsModule,
       NotificationModule,
+      FormsModule,
+      LabelModule
     
     ],
     exports: [RouterModule],
-    providers: [PagerTemplateDirective],
+    providers: [
+      PagerTemplateDirective,
+      { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true },
+    ],
     bootstrap: [AppComponent]
   })
   export class AppModule { }

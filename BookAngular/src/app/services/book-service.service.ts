@@ -7,19 +7,17 @@
     providedIn: 'root'
   })
 
-  export class BookServiceService {
-
+  export class BookServiceService  {
     constructor(private http: HttpClient) { }
-
     listBooks: BookModel[];
-    baseUrl: string = "https://localhost:44317/api/book"; 
+    baseUrl: string = "https://localhost:44313/api/books"; 
     GetBook(pageSize?: number, pageNumber?: number, searchString? : string): Observable<BookModel> {
       let result: any;
       let url : string;
       if(searchString == null){
         url = `${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}`;
         if (pageSize !== undefined && pageNumber !== undefined) {
-          result = this.http.get(url);
+          result = this.http.get(url,{withCredentials:true});
           return result;
         } else {
           pageSize = 5;
@@ -29,7 +27,7 @@
         }
       }
       else{
-        url = `${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}&searchiString=${searchString}`;
+        url = `${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}&searchString=${searchString}`;
         if (pageSize !== undefined && pageNumber !== undefined) {      
           result = this.http.get(url);
           return result;

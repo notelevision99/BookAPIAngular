@@ -3,6 +3,7 @@
   import { BookServiceService } from 'src/app/services/book-service.service';
 
   import { NotificationService } from '@progress/kendo-angular-notification';
+import { Router } from '@angular/router';
   @Component({
     selector: 'app-dialog',
     templateUrl: './dialog.component.html',
@@ -13,10 +14,18 @@
     @Output() cancel: EventEmitter<any> = new EventEmitter();
     @Input() bookData : Book;
     constructor(private service : BookServiceService,
-      private notificationService : NotificationService
+      private notificationService : NotificationService,
+      private router: Router
       ) { }
     ngOnInit() {
       console.log(this.bookData)
+    }
+    reloadCurrentRoute() {
+      let currentUrl = this.router.url;
+      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+          this.router.navigate([currentUrl]);
+          console.log(currentUrl);
+      });
     }
     closeForm(){
       this.isActive = false
@@ -36,14 +45,13 @@
         position: { horizontal: 'center', vertical: 'bottom' },
         type: { style: 'success', icon: true },
         hideAfter: 1000,
-        closable: true
     });
     }
     onSave(){
       this.isActive = false
       this.cancel.emit();
       if(this.bookData.bookId !== null){
-        this.service.DeleteBook(this.bookData.bookId.toString()).subscribe()
+        this.service.DeleteBook(this.bookData.bookId.toString()).subscribe(() => this.reloadCurrentRoute());
       }
       this.show();
     }

@@ -1,5 +1,6 @@
 import { Component, OnInit, } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { PageSizeChangeEvent } from '@progress/kendo-angular-pager';
 import { Book } from 'src/app/model/Book';
@@ -24,20 +25,16 @@ import { BookServiceService } from '../../services/book-service.service';
  
     public isActiveDialogUpsert = false;
     public isNew = false;
-    public isReloadBooks = false;
     public isActiveDialogDelete = false;
     public searchForm: FormGroup = new FormGroup({
       searchString: new FormControl()
     })
-    constructor(public service: BookServiceService
+    constructor(public service: BookServiceService,
+      private router : Router
       ) {}
     
     ngOnInit() {
         this.loadBooks();
-        if(this.isReloadBooks)
-        {
-          this.loadBooks();
-        }
     }
 
     onPageChange(e: PageChangeEvent) {
@@ -56,7 +53,6 @@ import { BookServiceService } from '../../services/book-service.service';
       this.isActiveDialogUpsert = true
       this.book = new Book();
       this.isNew = true;
-      this.isReloadBooks = true;
     }
 
     editHandler({ dataItem }) {
@@ -64,14 +60,13 @@ import { BookServiceService } from '../../services/book-service.service';
       this.book = dataItem
       this.isActiveDialogUpsert = true;
       this.isNew = false;
-      this.isReloadBooks = true;
     }
 
     removeHandler({ dataItem }) {
       this.idUpDel = dataItem.bookId
       this.isActiveDialogDelete = true
       this.book = dataItem  
-      this.isReloadBooks = true;
+      this.isActiveDialogDelete = true
     }
 
     cancelHandler(){
@@ -88,8 +83,8 @@ import { BookServiceService } from '../../services/book-service.service';
       var searchText = this.searchForm.controls['searchString'].value;
       this.searchString = searchText;
       this.loadBooks(this.searchString);
-      this.loadBooks();
     }
+   
 
     public loadBooks(searchString?: string) {
       var getBookCallback;

@@ -1,14 +1,17 @@
-    <app-header></app-header>
-    <router-outlet>
+<router-outlet>
+        <div *ngIf="currentUser">
+            <app-header></app-header>
+        </div>     
         <div class="content">
-            <div class="sidebar">
+            <div class="sidebar" *ngIf="currentUser">
                 <app-sidebar></app-sidebar>
             </div>
             <div class="content-body">
                 <app-book></app-book>
             </div>
         </div>
-    </router-outlet>
+
+</router-outlet>
 
 
 

@@ -5,6 +5,14 @@
       </div>
       <i class="fas fa-bars logo-icon"></i>
     </div>
-
-
-  </header>
+    <div class="account-container" *ngIf="currentUser">
+      <div class="account-name">
+        <span>Xin chào</span>
+        {{this.currentUser.userName}}
+      </div>
+      <div class="account-dropdown">
+        <li (click)="logout()"><span>Logout</span></li>
+        <li><span>Settings</span> </li>
+      </div>
+    </div>
+</header>
