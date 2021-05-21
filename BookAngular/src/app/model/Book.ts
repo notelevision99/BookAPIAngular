@@ -1,7 +1,7 @@
-    export class Book{
+    export class Book {
         bookId: String;
         bookName: String;
-        bookType : String;
+        bookType: String;
         description: String;
-        
+
     }

@@ -4,7 +4,7 @@
         totalPage: number;
         currentPage: number;
         pageSize: number;
-        totalCount : number;
+        totalCount: number;
         previousPage: number;
         nextPage: number;
         books: Book[]

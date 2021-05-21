@@ -5,9 +5,9 @@
         font-family: Arial, Helvetica, sans-serif;
     }
 
-    .content{
+    .content {
         display: flex;
     }
-    .content-body{
+    .content-body {
         width: 100%;
     }

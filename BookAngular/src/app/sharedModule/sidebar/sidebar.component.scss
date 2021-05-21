@@ -1,23 +1,19 @@
-    .sidebar{
-    
-    background-color: #282a35 ;
-    width: 200px;
-    height: 1080px;
-    display: block;
-    
+    .sidebar {
+        background-color: #282a35;
+        width: 200px;
+        height: 1080px;
+        display: block;
     }
-    .options ul{
-        
+    .options ul {
     }
 
-    .options li{
+    .options li {
         font-size: 16px;
         color: #fff;
         line-height: 32px;
         list-style-type: none;
-    
     }
-    .options li:hover{
+    .options li:hover {
         opacity: 0.5px;
         font-weight: 600;
         cursor: pointer;
