@@ -1,14 +1,13 @@
-﻿    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Volo.Abp.Application.Services;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using Volo.Abp.Application.Services;
 
-    namespace Acme.BookStore.Samples
+namespace Acme.BookStore.Samples
+{
+    public interface IAuthenticateServices : IApplicationService
     {
-        public interface IAuthenticateServices : IApplicationService
-        {
-            Task<UserRegister> GetUserById(string id);
-            Task<LoginResponse> Login(LoginDto model);
-        }
+        Task<LoginResponse> Login(LoginDto model);
     }
+}
