@@ -13,32 +13,16 @@
     baseUrl: string = "https://localhost:44313/api/books";
 
     GetBook(pageSize?: number, pageNumber?: number, searchString?: string): Observable<BookModel> {
-      let result: any;
-      let url: string;
-      if (searchString == null) {
-        url = `${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}`;
-        if (pageSize !== undefined && pageNumber !== undefined) {
-          result = this.http.get(url, { withCredentials: true });
-          return result;
-        } else {
-          pageSize = 5;
-          pageNumber = 1;
-          result = this.http.get(url);
-          return result;
-        }
+      let url = (!searchString)
+      ?`${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}`
+      : `${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}&searchString=${searchString}`;
+
+      // set defaut page size and page number.
+      if (!(pageSize || pageNumber)) {
+        pageSize = 5;
+        pageNumber = 1;
       }
-      else {
-        url = `${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}&searchString=${searchString}`;
-        if (pageSize !== undefined && pageNumber !== undefined) {
-          result = this.http.get(url);
-          return result;
-        } else {
-          pageSize = 5;
-          pageNumber = 1;
-          result = this.http.get(`${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}&searchString=${searchString}`);
-          return result;
-        }
-      }
+      return this.http.get<BookModel>(url);
     }
     
     GetBookById(id: string): Observable<any> {

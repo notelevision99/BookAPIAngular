@@ -22,7 +22,6 @@
   import { JWTInterceptor } from './helper/JWTInterceptor';
 
   const routes: Routes = [
-    { path: '',   redirectTo: '/book', pathMatch: 'full' },
     { path: 'book', component: ListbookComponent, canActivate: [Authgard] },
     { path: 'login', component: LoginComponent },
   ];
