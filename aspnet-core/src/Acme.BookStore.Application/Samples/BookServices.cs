@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Application.Services;
 using Volo.Abp.ObjectMapping;
 using Acme.BookStore;
@@ -23,9 +24,8 @@ namespace Acme.ProjectCompare.Samples
         }
         public async Task<BookList> GetBooks(int pageSize, int pageNumber, string searchString)
         {
-            var source = (string.IsNullOrWhiteSpace(searchString))
-                ? _bookRepository
-                : _bookRepository.Where(b =>
+            searchString = string.IsNullOrEmpty(searchString) ? "" : searchString;
+            var source =  _bookRepository.Where(b =>
                   b.BookName.Contains(searchString) || b.BookType.Contains(searchString) || b.Description.Contains(searchString)
                 ).AsQueryable();
 
@@ -33,7 +33,7 @@ namespace Acme.ProjectCompare.Samples
             var totalPage = (int)Math.Ceiling(totalCount / (double)pageSize);
             var previousPage = pageNumber > 1 ? (pageNumber - 1) : 1;
             var nextPage = pageNumber < totalPage ? (pageNumber + 1) : pageNumber;
-            var bookResult = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            var bookResult = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
             return new BookList
             {
@@ -71,18 +71,24 @@ namespace Acme.ProjectCompare.Samples
             await _bookRepository.UpdateAsync(existedBook);
             return true;
         }
-        public async Task<bool> CreateBook(BookDto bookDto)
+        public async Task<int> CreateBook(BookDto bookDto)
         {
-            Book book;
-            book = new Book();
-            if (bookDto == null)
+            if (bookDto.BookName == null)
             {
-                return false;
+                return 0;
+            }
+            if(bookDto.BookType == null)
+            {
+                return -1;
+            }
+            if(bookDto.Description == null)
+            {
+                return -2;
             }
 
             var bookToUpdate = _bookMapper.Map<BookDto, Book>(bookDto);
             await _bookRepository.InsertAsync(bookToUpdate);
-            return true;
+            return 1;
         }
         public async Task<bool> DeleteBook(Guid id)
         {

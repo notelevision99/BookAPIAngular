@@ -28,9 +28,9 @@
 
     public registerForm: FormGroup = new FormGroup({
       bookId: new FormControl(),
-      bookName: new FormControl(),
-      bookType: new FormControl(),
-      description: new FormControl()
+      bookName: new FormControl('',[Validators.required, Validators.minLength(1), Validators.maxLength(20)]),
+      bookType: new FormControl('', [Validators.required,Validators.minLength(1), Validators.maxLength(20)]),
+      description: new FormControl('', [Validators.required,Validators.minLength(1), Validators.maxLength(50)])
     });
 
     public close() {
@@ -68,21 +68,23 @@
     }
     
     public submitForm() {
-      this.bookData = Object.assign({}, this.registerForm.value)
-      if (this.bookData.bookId == null) {
-        this.service.CreateBook(this.bookData).subscribe(() => {
-          this.reloadCurrentRoute();
-          this.showNotify();
-        });
+      if(this.bookData.bookName == null || this.bookData.bookType == null || this.bookData.description == null) {this.isActiveDialog = true ;console.log(this.isActiveDialog)}
+      else{
+        if (this.bookData.bookId == null) {
+          this.service.CreateBook(this.bookData).subscribe(() => {
+            this.reloadCurrentRoute();
+            this.showNotify();
+          });
+        }
+        else {
+          this.service.EditBook(this.bookData.bookId.toString(), this.bookData).subscribe(() => {
+            this.reloadCurrentRoute();
+            this.showNotify();
+          })
+        }
+        this.isActiveDialog = false;
+        this.cancel.emit();
       }
-      else {
-        this.service.EditBook(this.bookData.bookId.toString(), this.bookData).subscribe(() => {
-          this.reloadCurrentRoute();
-          this.showNotify();
-        })
       }
-      this.isActiveDialog = false;
-      this.cancel.emit();
-  
-    }
+     
   }

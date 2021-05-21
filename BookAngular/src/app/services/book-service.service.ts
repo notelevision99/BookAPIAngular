@@ -13,9 +13,8 @@
     baseUrl: string = "https://localhost:44313/api/books";
 
     GetBook(pageSize?: number, pageNumber?: number, searchString?: string): Observable<BookModel> {
-      let url = (!searchString)
-      ?`${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}`
-      : `${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}&searchString=${searchString}`;
+      searchString == undefined  ? searchString = "" : searchString 
+      let url =  `${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}&searchString=${searchString}`;
 
       // set defaut page size and page number.
       if (!(pageSize || pageNumber)) {

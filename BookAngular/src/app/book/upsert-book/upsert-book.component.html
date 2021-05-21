@@ -6,25 +6,25 @@
         <fieldset class="k-form-fieldset">
             <kendo-formfield>
                 <kendo-label [for]="bookDescription" text="Book Id"></kendo-label>
-                <input type="text" formControlName="bookId" kendoTextBox #bookId disabled />
+                <input type="text" formControlName="bookId" minlength="20" [(ngModel)]="this.bookData.bookId" kendoTextBox #bookId disabled />
                 <kendo-formhint>The id of book</kendo-formhint>
 
             </kendo-formfield>
             <kendo-formfield>
                 <kendo-label [for]="bookName" text="Book Name"></kendo-label>
-                <input type="text" formControlName="bookName" kendoTextBox #bookName required />
+                <input type="text" formControlName="bookName" minlength="20" [(ngModel)]="this.bookData.bookName" kendoTextBox #bookName required />
                 <kendo-formhint>The name of book</kendo-formhint>
-                <kendo-formerror>Error: Book Name is required</kendo-formerror>
+                <kendo-formerror *ngIf="registerForm.controls.bookName.errors">Error: Book Name is required</kendo-formerror>
             </kendo-formfield>
             <kendo-formfield>
                 <kendo-label text="Book Type"></kendo-label>
-                <input type="text" formControlName="bookType" kendoTextBox #bookType required />
+                <input type="text" formControlName="bookType" minlength="20" [(ngModel)]="this.bookData.bookType" kendoTextBox #bookType required />
                 <kendo-formhint>The type of book</kendo-formhint>
                 <kendo-formerror>Error: Book Type is required</kendo-formerror>
             </kendo-formfield>
             <kendo-formfield>
                 <kendo-label text="Book Description"></kendo-label>
-                <input type="text" formControlName="description" kendoTextBox #bookDescription required />
+                <input type="text" formControlName="description" minlength="50" [(ngModel)]="this.bookData.description" kendoTextBox #bookDescription required />
                 <kendo-formhint>The description of book</kendo-formhint>
                 <kendo-formerror>Error: Book description is required</kendo-formerror>
             </kendo-formfield>

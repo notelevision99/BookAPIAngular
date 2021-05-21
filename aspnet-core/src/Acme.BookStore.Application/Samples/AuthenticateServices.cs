@@ -1,4 +1,5 @@
 ﻿using Acme.BookStore.Samples;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -28,10 +29,14 @@ namespace Acme.BookStore.NewFolder
         public async Task<LoginResponse> Login(LoginDto model)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
-            if (user == null)
-            {
-                return null;
-            }
+            //Check user name or pwd null
+            if(string.IsNullOrEmpty(model.UserName) || string.IsNullOrEmpty(model.Password)) { return null; }  
+            //Check username has diff
+            if(user.UserName != model.UserName) { return null; }
+            //Check pwd user 
+            var checkPwd = (_userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password) != PasswordVerificationResult.Failed) ? true : false;
+            if(!checkPwd) { return null; }
+
             var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),

@@ -10,7 +10,7 @@ namespace Acme.ProjectCompare.Samples
         Task<BookList> GetBooks(int pageSize, int pageNumber, string searchString);
         Task<BookDto> GetBookById(Guid id);
         Task<bool> UpdateBook(Guid id, BookDto bookDto);
-        Task<bool> CreateBook(BookDto bookDto);
+        Task<int> CreateBook(BookDto bookDto);
         Task<bool> DeleteBook(Guid id);
     }
 }
