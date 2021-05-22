@@ -10,8 +10,8 @@ export class Authgard implements CanActivate {
         private authenticateService: AuthenticateService
     ) { }
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const currentUSer = this.authenticateService.currentUserValue;
-        if (currentUSer) {
+        const currentUser = this.authenticateService.currentUserValue;
+        if (currentUser) {
             return true;
         }
         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });

@@ -4,6 +4,7 @@
   import { Book } from 'src/app/model/Book';
   import { BookServiceService } from 'src/app/services/book-service.service';
   import { NotificationService } from '@progress/kendo-angular-notification';
+import { BookType } from 'src/app/model/BookType';
   @Component({
     selector: 'app-upsert-book',
     templateUrl: './upsert-book.component.html',
@@ -13,24 +14,26 @@
     @Input() isActiveDialog = false;
     @Input() isNew = false;
     @Output() cancel: EventEmitter<any> = new EventEmitter();
-    @Input() bookData: Book;
+    @Input() bookData: Book = new Book();
 
+    public bookType : BookType = new BookType();
+    public listTypes : Array<string> = this.bookType.listTypes;
     constructor(private router: Router,
       public service: BookServiceService,
       private notificationService: NotificationService
     ) { }
 
     ngOnInit() {
-      if (this.bookData !== null) {
+      if (this.bookData) {
         this.loadBook();
       }
     }
 
     public registerForm: FormGroup = new FormGroup({
       bookId: new FormControl(),
-      bookName: new FormControl('',[Validators.required, Validators.minLength(1), Validators.maxLength(20)]),
-      bookType: new FormControl('', [Validators.required,Validators.minLength(1), Validators.maxLength(20)]),
-      description: new FormControl('', [Validators.required,Validators.minLength(1), Validators.maxLength(50)])
+      bookName: new FormControl(this.bookData.bookName, [Validators.required,Validators.maxLength(20)]),
+      bookType: new FormControl(null, [Validators.required,Validators.maxLength(20)]),
+      description: new FormControl(this.bookData.description, [Validators.required,Validators.maxLength(50)])
     });
 
     public close() {
@@ -40,7 +43,7 @@
 
     private loadBook() {
       if (this.bookData != null) {
-        this.registerForm.patchValue({
+        this.registerForm.setValue({
           bookId: this.bookData.bookId,
           bookName: this.bookData.bookName,
           bookType: this.bookData.bookType,
@@ -66,25 +69,18 @@
         this.router.navigate([currentUrl]);
       });
     }
-    
-    public submitForm() {
-      if(this.bookData.bookName == null || this.bookData.bookType == null || this.bookData.description == null) {this.isActiveDialog = true ;console.log(this.isActiveDialog)}
-      else{
-        if (this.bookData.bookId == null) {
-          this.service.CreateBook(this.bookData).subscribe(() => {
-            this.reloadCurrentRoute();
-            this.showNotify();
-          });
-        }
-        else {
-          this.service.EditBook(this.bookData.bookId.toString(), this.bookData).subscribe(() => {
-            this.reloadCurrentRoute();
-            this.showNotify();
-          })
-        }
-        this.isActiveDialog = false;
-        this.cancel.emit();
+
+    public submitForm() {     
+      this.registerForm.markAllAsTouched();
+      if (this.registerForm.valid) {
+        var bookObservable = !this.bookData.bookId ? this.service.CreateBook(this.bookData) : this.service.EditBook(this.bookData.bookId.toString(), this.bookData);
+        bookObservable.subscribe(() => {
+          this.reloadCurrentRoute();
+          this.isActiveDialog = false;
+          this.cancel.emit();
+          this.showNotify();
+        });
       }
-      }
-     
+    }
+        
   }

@@ -20,11 +20,15 @@ namespace Acme.BookStore.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
             var result = await _authServices.Login(model);
-            if (result == null)
+            if (result == (null,-1))
             {
-                return new BadRequestObjectResult(new { Message = "Something wrong" });
+                return new BadRequestObjectResult(new { Message = "Username and password must be filled" });
             }
-            return Ok(result);
+            if (result == (null, 0))
+            {
+                return new BadRequestObjectResult(new { Message = "Account not exist" });
+            }
+            return Ok(result.Item1);
         }
     }
 }

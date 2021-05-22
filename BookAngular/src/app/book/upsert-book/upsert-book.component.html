@@ -12,25 +12,57 @@
             </kendo-formfield>
             <kendo-formfield>
                 <kendo-label [for]="bookName" text="Book Name"></kendo-label>
-                <input type="text" formControlName="bookName" minlength="20" [(ngModel)]="this.bookData.bookName" kendoTextBox #bookName required />
+                <input type="text" formControlName="bookName"  [(ngModel)]="this.bookData.bookName" kendoTextBox #bookName required />
                 <kendo-formhint>The name of book</kendo-formhint>
-                <kendo-formerror *ngIf="registerForm.controls.bookName.errors">Error: Book Name is required</kendo-formerror>
+                <kendo-formerror>
+                <div *ngIf="registerForm.controls.bookName.errors?.required">
+                    Error: Book Name is required
+                </div>
+                <div *ngIf="registerForm.controls.bookName.errors?.maxlength">
+                    Error: Max length is 20 character
+                </div>
+                </kendo-formerror>
             </kendo-formfield>
             <kendo-formfield>
-                <kendo-label text="Book Type"></kendo-label>
-                <input type="text" formControlName="bookType" minlength="20" [(ngModel)]="this.bookData.bookType" kendoTextBox #bookType required />
+                <!-- <kendo-label text="Book Type"></kendo-label>
+                <input type="text" formControlName="bookType" [(ngModel)]="this.bookData.bookType" kendoTextBox #bookType required />
                 <kendo-formhint>The type of book</kendo-formhint>
-                <kendo-formerror>Error: Book Type is required</kendo-formerror>
+                <kendo-formerror>
+                <div *ngIf="registerForm.controls.bookType.errors?.required">
+                    Error: Book type is required
+                </div>
+                <div *ngIf="registerForm.controls.bookType.errors?.maxlength">
+                    Error: Max length is 20 character
+                </div>
+                </kendo-formerror> -->
+                <kendo-label [for]="bookType" text="BookType"></kendo-label>
+                <kendo-combobox
+                formControlName="bookType"
+                [data]="this.listTypes"
+                [(ngModel)]="this.bookData.bookType"
+                required
+        >
+                </kendo-combobox>
+                <kendo-formhint>Current country of residence</kendo-formhint>
+                <kendo-formerror>Required</kendo-formerror>
+         
             </kendo-formfield>
             <kendo-formfield>
                 <kendo-label text="Book Description"></kendo-label>
-                <input type="text" formControlName="description" minlength="50" [(ngModel)]="this.bookData.description" kendoTextBox #bookDescription required />
+                <input type="text" formControlName="description"  [(ngModel)]="this.bookData.description" kendoTextBox #bookDescription required />
                 <kendo-formhint>The description of book</kendo-formhint>
-                <kendo-formerror>Error: Book description is required</kendo-formerror>
+                <kendo-formerror>
+                <div *ngIf="registerForm.controls.description.errors?.required">
+                    Error: Description is required
+                </div>
+                <div *ngIf="registerForm.controls.description.errors?.maxlength">
+                    Error: Max length is 50 character
+                </div>
+                </kendo-formerror>
             </kendo-formfield>
         </fieldset>
     </form>
     <kendo-dialog-actions>
-        <button kendoButton (click)="submitForm()" primary="true">Yes</button>
+        <button kendoButton (click)="submitForm()" primary="true">Save</button>
     </kendo-dialog-actions>
 </kendo-dialog>

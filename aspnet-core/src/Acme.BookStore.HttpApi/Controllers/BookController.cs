@@ -1,4 +1,5 @@
-﻿using Acme.ProjectCompare.Samples;
+﻿using Acme.BookStore.Samples;
+using Acme.ProjectCompare.Samples;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,9 +24,9 @@ namespace Acme.BookStore.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> GetBooks([FromQuery] int pageSize, int pageNumber, string searchString)
+        public async Task<JsonResult> GetBooks([FromQuery] FilterDto filterDto)
         {
-            var result = await _bookServices.GetBooks(pageSize, pageNumber, searchString);
+            var result = await _bookServices.GetBooks(filterDto);
             return Json(result);
         }
         [HttpGet("{id}")]

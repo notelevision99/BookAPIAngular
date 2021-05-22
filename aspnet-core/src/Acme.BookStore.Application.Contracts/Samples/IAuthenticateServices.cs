@@ -8,6 +8,7 @@ namespace Acme.BookStore.Samples
 {
     public interface IAuthenticateServices : IApplicationService
     {
-        Task<LoginResponse> Login(LoginDto model);
+
+        Task<(LoginResponse, int)> Login(LoginDto model);
     }
 }
