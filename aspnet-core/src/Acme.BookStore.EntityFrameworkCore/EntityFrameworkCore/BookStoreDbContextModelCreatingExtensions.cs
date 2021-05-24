@@ -15,10 +15,13 @@ namespace Acme.BookStore.EntityFrameworkCore
             builder.Entity<Book>(b =>
             {
                 b.ToTable("Books");
+                b.Property("BookName").HasMaxLength(20);
+                b.Property("BookType").HasMaxLength(20);
+                b.Property("Description").HasMaxLength(50);
                 b.ConfigureByConvention();
-                    //auto configure for the base class props
-                    //...
-                });
+                //auto configure for the base class props
+                //...
+            });
 
         }
     }

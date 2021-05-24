@@ -20,10 +20,11 @@
   import { LabelModule } from '@progress/kendo-angular-label';
   import { Authgard } from './helper/authgard';
   import { JWTInterceptor } from './helper/JWTInterceptor';
-
+  import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
   const routes: Routes = [
     { path: 'book', component: ListbookComponent, canActivate: [Authgard] },
     { path: 'login', component: LoginComponent },
+    { path: '**', redirectTo: '' }
   ];
 
   @NgModule({
@@ -46,7 +47,8 @@
       DialogsModule,
       NotificationModule,
       FormsModule,
-      LabelModule
+      LabelModule,
+      DropDownsModule
 
     ],
     exports: [RouterModule],

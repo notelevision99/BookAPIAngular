@@ -1,4 +1,5 @@
-﻿using Acme.ProjectCompare.Samples;
+﻿using Acme.BookStore.Samples;
+using Acme.ProjectCompare.Samples;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,9 +24,9 @@ namespace Acme.BookStore.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> GetBooks([FromQuery] int pageSize, int pageNumber, string? searchString)
+        public async Task<JsonResult> GetBooks([FromQuery] FilterDto filterDto)
         {
-            var result = await _bookServices.GetBooks(pageSize, pageNumber, searchString);
+            var result = await _bookServices.GetBooks(filterDto);
             return Json(result);
         }
         [HttpGet("{id}")]
@@ -43,9 +44,17 @@ namespace Acme.BookStore.Controllers
         public async Task<IActionResult> CreateBook([FromBody] BookDto bookDto)
         {
             var result = await _bookServices.CreateBook(bookDto);
-            if (result == false)
+            if (result == 0)
             {
-                return new BadRequestObjectResult(new { Message = "Update failed" });
+                return new BadRequestObjectResult(new { Message = "Book Name is  not null" });
+            }
+            if(result == -1)
+            {
+                return new BadRequestObjectResult(new { Message = "Book Type is not null" });
+            }
+            if(result == -2)
+            {
+                return new BadRequestObjectResult(new { Message = "Book Description is not null" });
             }
             return Ok(new { Message = "Created Successfully" });
         }

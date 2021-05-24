@@ -4,7 +4,7 @@
     <div class="search-field">
       <form [formGroup]="searchForm">
         <kendo-formfield>
-          <kendo-textbox formControlName="searchString" #searchString required></kendo-textbox>
+          <input type="text" formControlName="searchString" [(ngModel)]="this.searchString"  required/>
           <button kendoButton (click)="onSearch()">Search</button>
         </kendo-formfield>
       </form>

@@ -2,6 +2,7 @@
   import { FormControl, FormGroup } from '@angular/forms';
   import { ActivatedRoute, Router } from '@angular/router';
   import { TextBoxComponent } from '@progress/kendo-angular-inputs';
+import { NotificationService } from '@progress/kendo-angular-notification';
   import { AuthenticateService } from '../services/authenticate.service';
   @Component({
     selector: 'app-login',
@@ -15,14 +16,15 @@
     constructor(
       private route : ActivatedRoute,
       private router: Router,
+      private notificationService: NotificationService,
       private authenticateService: AuthenticateService
     ) {
       if(this.authenticateService.currentUserValue){
-        this.router.navigate['/book'];
+        this.router.navigate(['/']);
       }
     }
     @ViewChild("password") public textbox: TextBoxComponent;
-
+    
     ngOnInit() {
       this.loginForm = new FormGroup({
         userName: new FormControl(),
@@ -35,15 +37,31 @@
 
 
     public submitForm(){
-      this.authenticateService.login(this.f['userName'].value,this.f['password'].value)
-      .subscribe(
-        () => {
-          this.router.navigate([this.returnUrl]);
-        }
-      )
+      if(this.loginForm.valid){
+        this.authenticateService.login(this.f['userName'].value,this.f['password'].value)
+        .subscribe(
+          () => {
+            this.router.navigate([this.returnUrl]);
+          },
+          err => {
+            this.showNotifyError(err.error.message);
+          }
+        )
+      }   
     }
     public clearForm(){
       this.loginForm.reset();
+    }
+
+    private showNotifyError(message : string): void {
+      this.notificationService.show({
+        content: `${message}`,
+        cssClass: 'button-notification',
+        animation: { type: 'fade', duration: 500 },
+        position: { horizontal: 'right', vertical: 'top' },
+        type: { style: 'error', icon: true },
+        hideAfter: 2000
+      });
     }
 
     private ngAfterViewInit(): void {

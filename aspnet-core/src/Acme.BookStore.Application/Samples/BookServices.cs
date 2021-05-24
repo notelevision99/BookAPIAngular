@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Application.Services;
 using Volo.Abp.ObjectMapping;
 using Acme.BookStore;
+using Acme.BookStore.Samples;
 
 namespace Acme.ProjectCompare.Samples
 {
@@ -21,25 +23,24 @@ namespace Acme.ProjectCompare.Samples
             _bookRepository = bookRepository;
             _bookMapper = bookMapper;
         }
-        public async Task<BookList> GetBooks(int pageSize, int pageNumber, string searchString)
+        public async Task<BookList> GetBooks(FilterDto filterDto)
         {
-            var source = (string.IsNullOrWhiteSpace(searchString))
-                ? _bookRepository
-                : _bookRepository.Where(b =>
-                  b.BookName.Contains(searchString) || b.BookType.Contains(searchString) || b.Description.Contains(searchString)
+            filterDto.searchString = string.IsNullOrEmpty(filterDto.searchString) ? "" : filterDto.searchString;
+            var source =  _bookRepository.Where(b =>
+                  b.BookName.Contains(filterDto.searchString) || b.BookType.Contains(filterDto.searchString) || b.Description.Contains(filterDto.searchString)
                 ).AsQueryable();
 
             var totalCount = source.Count();
-            var totalPage = (int)Math.Ceiling(totalCount / (double)pageSize);
-            var previousPage = pageNumber > 1 ? (pageNumber - 1) : 1;
-            var nextPage = pageNumber < totalPage ? (pageNumber + 1) : pageNumber;
-            var bookResult = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            var totalPage = (int)Math.Ceiling(totalCount / (double)filterDto.pageSize);
+            var previousPage = filterDto.pageNumber > 1 ? (filterDto.pageNumber - 1) : 1;
+            var nextPage = filterDto.pageNumber < totalPage ? (filterDto.pageNumber + 1) : filterDto.pageNumber;
+            var bookResult = await source.Skip((filterDto.pageNumber - 1) * filterDto.pageSize).Take(filterDto.pageSize).ToListAsync();
 
             return new BookList
             {
                 TotalPage = totalPage,
-                CurrentPage = pageNumber,
-                PageSize = pageSize,
+                CurrentPage = filterDto.pageNumber,
+                PageSize = filterDto.pageSize,
                 TotalCount = totalCount,
                 PreviousPage = previousPage,
                 NextPage = nextPage,
@@ -71,18 +72,24 @@ namespace Acme.ProjectCompare.Samples
             await _bookRepository.UpdateAsync(existedBook);
             return true;
         }
-        public async Task<bool> CreateBook(BookDto bookDto)
+        public async Task<int> CreateBook(BookDto bookDto)
         {
-            Book book;
-            book = new Book();
-            if (bookDto == null)
+            if (bookDto.BookName == null)
             {
-                return false;
+                return 0;
+            }
+            if(bookDto.BookType == null)
+            {
+                return -1;
+            }
+            if(bookDto.Description == null)
+            {
+                return -2;
             }
 
             var bookToUpdate = _bookMapper.Map<BookDto, Book>(bookDto);
             await _bookRepository.InsertAsync(bookToUpdate);
-            return true;
+            return 1;
         }
         public async Task<bool> DeleteBook(Guid id)
         {

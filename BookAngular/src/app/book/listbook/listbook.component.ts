@@ -1,4 +1,4 @@
-import { Component, OnInit, } from '@angular/core';
+import { Component, OnInit, ViewChild, } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
@@ -7,7 +7,6 @@ import { Book } from 'src/app/model/Book';
 import { BookModel } from 'src/app/model/BookModel';
 import { PagingModel } from 'src/app/model/PagingModel';
 import { BookServiceService } from '../../services/book-service.service';
-
 
 @Component({
   selector: 'app-listbook',
@@ -18,7 +17,7 @@ export class ListbookComponent implements OnInit {
   private bookModel: BookModel;
   private booksDataGrid: any;
   private idUpDel: string;
-  private searchString: string;
+  public searchString: string = "";
 
   public pagingModel: PagingModel = new PagingModel();
   public gridView: GridDataResult;
@@ -30,7 +29,8 @@ export class ListbookComponent implements OnInit {
     searchString: new FormControl()
   })
 
-  constructor(public service: BookServiceService
+  constructor(public service: BookServiceService,
+    private router : Router
   ) { }
 
   ngOnInit() {
@@ -40,8 +40,9 @@ export class ListbookComponent implements OnInit {
   public onPageChange(e: PageChangeEvent) {
     this.pagingModel.skip = e.skip;
     this.pagingModel.pageSize = e.take;
-    this.pagingModel.currentPage = Math.ceil((this.pagingModel.skip / this.pagingModel.pageSize) + 1);
+    this.pagingModel.currentPage = Math.ceil((this.pagingModel.skip / this.pagingModel.pageSize) + 1); 
     this.searchString == undefined ? this.loadBooks() : this.loadBooks(this.searchString);
+    
   }
 
   public onPageSizeChange(e: PageSizeChangeEvent) {
@@ -56,8 +57,9 @@ export class ListbookComponent implements OnInit {
   }
 
   public editHandler({ dataItem }) {
-    this.idUpDel = dataItem.bookId;
-    this.book = dataItem;
+    var bookUpdate = Object.assign({}, dataItem);
+    this.idUpDel = bookUpdate.bookId;
+    this.book = bookUpdate;
     this.isActiveDialogUpsert = true;
     this.isNew = false;
   }
@@ -76,19 +78,15 @@ export class ListbookComponent implements OnInit {
   }
 
   public onSearch() {
-    var searchText = this.searchForm.controls['searchString'].value;
-    this.searchString = searchText;
+    //Back to pageNumber = 1 and skip = 0;
+    this.pagingModel.skip = 0;
+    this.pagingModel.currentPage = 1;
     this.loadBooks(this.searchString);
+   
   }
 
   private loadBooks(searchString?: string) {
-    var getBookCallback;
-    if (searchString == null) {
-      getBookCallback = (this.pagingModel.skip === 0 && this.pagingModel.pageSize == 2) ? this.service.GetBook() : this.service.GetBook(this.pagingModel.pageSize, this.pagingModel.currentPage);
-    }
-    else {
-      getBookCallback = (this.pagingModel.skip === 0 && this.pagingModel.pageSize == 2) ? this.service.GetBook() : this.service.GetBook(this.pagingModel.pageSize, this.pagingModel.currentPage, this.searchString);
-    }
+    var getBookCallback = (this.pagingModel.skip === 0 && this.pagingModel.pageSize == 2) ? this.service.GetBook() : this.service.GetBook(this.pagingModel.pageSize, this.pagingModel.currentPage, searchString);
     getBookCallback.subscribe((book: BookModel) => {
       this.bookModel = book;
       this.pagingModel.totalCount = this.bookModel.totalCount;

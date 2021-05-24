@@ -16,6 +16,7 @@ import { DialogModule } from '@progress/kendo-angular-dialog';
 import { NotificationModule } from '@progress/kendo-angular-notification';
 import { UpsertBookComponent } from './upsert-book/upsert-book.component';
 import { ShareModule } from '../share/share.module';
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 
 const routes: Routes = [
   ];
@@ -42,6 +43,7 @@ const routes: Routes = [
     NotificationModule,
     RouterModule.forRoot(routes),
     BrowserAnimationsModule,
+    DropDownsModule
   ],
   exports: [
     ListbookComponent,
