@@ -17,7 +17,7 @@ export class ListbookComponent implements OnInit {
   private bookModel: BookModel;
   private booksDataGrid: any;
   private idUpDel: string;
-  private searchString: string = "";
+  public searchString: string = "";
 
   public pagingModel: PagingModel = new PagingModel();
   public gridView: GridDataResult;
@@ -40,9 +40,8 @@ export class ListbookComponent implements OnInit {
   public onPageChange(e: PageChangeEvent) {
     this.pagingModel.skip = e.skip;
     this.pagingModel.pageSize = e.take;
-    this.pagingModel.currentPage = Math.ceil((this.pagingModel.skip / this.pagingModel.pageSize) + 1);
-    
-    this.searchString ? this.loadBooks() : this.loadBooks(this.searchString);
+    this.pagingModel.currentPage = Math.ceil((this.pagingModel.skip / this.pagingModel.pageSize) + 1); 
+    this.searchString == undefined ? this.loadBooks() : this.loadBooks(this.searchString);
     
   }
 
@@ -82,8 +81,6 @@ export class ListbookComponent implements OnInit {
     //Back to pageNumber = 1 and skip = 0;
     this.pagingModel.skip = 0;
     this.pagingModel.currentPage = 1;
-    var searchText = this.searchForm.controls['searchString'].value;
-    this.searchString = !searchText ? "" : searchText;
     this.loadBooks(this.searchString);
    
   }
